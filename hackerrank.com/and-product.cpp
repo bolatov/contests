@@ -1,26 +1,36 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-#ifndef int64
-#define int64 long long
-#endif
+long long brute_force(long long a, long long b) {
+    for (long long i = a; i <= b; ++i) {
+        a &= i;
+    }
+    return a;
+}
 
 int main() {
     freopen("input.txt", "r", stdin);
     int t;
     cin >> t;
-    while (t--) {
-        int64 a, b, res;
+    int itest = 0;
+    while (itest++ < t) {
+        long long a, b, ans, start;
         cin >> a >> b;
-        res = 0;
-        for (int j = 31; j >= 0 && (a & 1 << j) == (b & 1 << j); --j) {
-            res |= (b & 1 << j);
+        ans = a;
+        start = 1;
+        while (start < a) {
+            start <<= 1;
         }
-        printf("%lld\n", res);
+        if (start > b) {
+            ans = brute_force(a, b);
+        }
+        for (; start <= b; start <<= 1) {
+            ans &= start;
+        }
+        ans &= b;
+        cout << itest << ": " << (ans == brute_force(a, b) ? "-" : "FAILED")
+             << endl;
     }
     return 0;
 }

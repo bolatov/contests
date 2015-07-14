@@ -5,42 +5,38 @@
 #include <algorithm>
 using namespace std;
 
-#ifndef uint64
 #define uint64 unsigned long long int
-#endif
+
+uint64 prevPower(uint64 x) {
+    x = x | (x >> 1);
+    x = x | (x >> 2);
+    x = x | (x >> 4);
+    x = x | (x >> 8);
+    x = x | (x >> 16);
+    x = x | (x >> 32);
+    return x - (x >> 1);
+}
+
+bool isPowerOfTwo(uint64 n) { return n && !(n & (n - 1)); }
 
 int main() {
     freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     int t;
     cin >> t;
-    string sl = "Louise", sr = "Richard";
-    while (t--) {
+    while (t-- > 0) {
         uint64 n;
         cin >> n;
-        // printf("N_start=%llu\n", n);
-        int i = 0;
-        for (i = 0; n > 1 && i < 100; i++) {
-            // is power of two?
-            int cnt = 0, pos = -1;
-            for (int j = 0; j < 64; j++) {
-                if (n & (1ULL << j)) {
-                    // printf("\t%d bit is set in N=%llu\n", j, n);
-                    cnt++;
-                    pos = j;
-                }
+        int moves = 0;
+        while (n != 1) {
+            if (!isPowerOfTwo(n)) {
+                n = prevPower(n);
             }
-            // printf("\tcnt=%d\n", cnt);
-            if (cnt == 1) {
-                n -= n / 2ULL;
-                // printf("\tyes, N=%llu\n", n);
-            } else {
-                n -= 1ULL << (pos);
-                // printf("\tno, N=%llu\n", n);
-            }
-            // printf("========================\n");
+            n >>= 1;
+            cout << "n: " << n << endl;
+            moves++;
         }
-        // printf("N_final=%llu\n", n);
-        cout << (i % 2 ? sl : sr) << endl;
+        cout << (moves % 2 ? "Louise" : "Richard") << endl;
     }
     return 0;
 }

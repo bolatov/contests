@@ -5,32 +5,48 @@
 #include <algorithm>
 using namespace std;
 
-int main() {
-    freopen("input.txt", "r", stdin);
-
-    int ts;
-    cin >> ts;
-    while (ts--) {
-        string s;
-        cin >> s;
-
-        string r = "no answer";
-        int pivot = -1;
-        for (int i = (int)s.size() - 1; i > 0; i--) {
-            if (s[i] > s[i - 1]) {
-                pivot = i - 1;
-                for (int j = (int)s.size() - 1; j > pivot; --j) {
-                    if (s[j] > s[pivot]) {
-                        swap(s[j], s[pivot]);
-                        reverse(s.begin() + i, s.end());
-                        r = s;
-                        break;
-                    }
-                }
-                break;
+void sortStr(string &s) {
+    while (true) {
+        bool swapped = false;
+        for (int j = 1; j < s.size(); ++j) {
+            if (s[j - 1] > s[j]) {
+                swap(s[j - 1], s[j]);
+                swapped = true;
             }
         }
-        cout << r << endl;
+        if (!swapped) {
+            break;
+        }
+    }
+}
+
+int main() {
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    int t;
+    string s;
+    cin >> t;
+    while (t-- > 0) {
+        cin >> s;
+        string ans = s;
+        sortStr(ans);
+        for (int i = 0; i < s.size(); ++i) {
+            bool found = false;
+            for (int j = i + 1; j < s.size(); ++j) {
+                swap(ans[i], ans[j]);
+                if (ans > s) {
+                    found = true;
+                    break;
+                } else {
+                    swap(ans[i], ans[j]);
+                }
+            }
+            if (found)
+                break;
+        }
+        if (s == ans)
+            ans = "no answer";
+        cout << ans << endl;
     }
     return 0;
 }
