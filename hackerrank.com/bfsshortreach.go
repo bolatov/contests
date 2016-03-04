@@ -1,70 +1,75 @@
 package main
 
 import (
-	"fmt"
+	"container/list"
 	"math"
+
+	"fmt"
 )
-
-type edge struct {
-	u, v int
-}
-
-func (e *edge) String() string {
-	return fmt.Sprintf("%d %d", e.u, e.v)
-}
 
 const max = math.MaxInt64
 
-func solve(n, s int, es []edge) []int64 {
-	r := make([]int64, n)
-	for i := 0; i < n; i++ {
-		r[i] = max
+// solve uses BFS
+func solve(s int, g [][]int) []int64 {
+	u := make([]bool, len(g))
+	d := make([]int64, len(g))
+	for i := 0; i < len(d); i++ {
+		d[i] = max
 	}
-	r[s-1] = 0
-	for i := 0; i < n; i++ {
-		for _, e := range es {
-			if r[i] < max {
-				if r[e.v-1] > r[e.u-1]+1 {
-					r[e.v-1] = r[e.u-1] + 1
-				}
+	d[s] = 0
+
+	q := list.New()
+	q.PushBack(s)
+
+	for e := q.Front(); e != nil; e = e.Next() {
+		ch := e.Value.(int)
+		if u[ch] {
+			continue
+		}
+		u[ch] = true
+		for _, v := range g[ch] {
+			if d[ch]+6 < d[v] {
+				d[v] = d[ch] + 6
 			}
+			q.PushBack(v)
 		}
 	}
 
-	return r
+	return d
 }
 
-func print(r []int64) {
-	for _, v := range r {
-		if v == 0 {
+func print(d []int64, s int) {
+	for i, v := range d {
+		if i == s {
 			continue
 		} else if v == max {
 			fmt.Print("-1 ")
 		} else {
-			fmt.Printf("%d ", v*6)
+			fmt.Printf("%d ", v)
 		}
 	}
 	fmt.Println()
 }
 
 func main() {
-	var t int
+	var t, n, m, u, v, s int
 	fmt.Scanf("%d\n", &t)
 	for it := 0; it < t; it++ {
-		var n, m int
 		fmt.Scanf("%d %d\n", &n, &m)
 
-		var es []edge
-		for i := 0; i < m; i++ {
-			var e edge
-			fmt.Scanf("%d %d\n", &e.u, &e.v)
-			es = append(es, e)
-
+		g := make([][]int, n)
+		for i := 0; i < len(g); i++ {
+			g[i] = make([]int, 0)
 		}
-		var s int
+		for i := 0; i < m; i++ {
+			fmt.Scanf("%d %d\n", &u, &v)
+			u--
+			v--
+			g[u] = append(g[u], v)
+			g[v] = append(g[v], u)
+		}
 		fmt.Scanf("%d\n", &s)
-		r := solve(n, s, es)
-		print(r)
+		r := solve(s-1, g)
+		print(r, s-1)
 	}
-	fmt.Println()
 }
