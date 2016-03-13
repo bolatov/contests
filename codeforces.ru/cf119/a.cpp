@@ -9,6 +9,7 @@ int main() {
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
 #endif
+<<<<<<< HEAD
     int n, a, b, c;
     cin >> n >> a >> b >> c;
 
