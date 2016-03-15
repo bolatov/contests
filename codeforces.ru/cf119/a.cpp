@@ -9,19 +9,22 @@ int main() {
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
 #endif
-    int n;
-    vector<int> a(3), dp(10000, -10000);
-    cin >> n >> a[0] >> a[1] >> a[2];
-    dp[0] = 0;
-    for (int i = 1; i <= n; ++i) {
-        dp[i] = -1;
-        for (int j = 0; j < 3; ++j) {
-            if ((i - a[j]) >= 0) {
-                dp[i] = max(dp[i], dp[i - a[j]] + 1);
+<<<<<<< HEAD
+    int n, a, b, c;
+    cin >> n >> a >> b >> c;
+
+    int ans = -1;
+    for (int i = 0; i <= n; ++i) {
+        for (int j = 0; j <= n; ++j) {
+            int ab = a * i + b * j;
+            int k = (n - ab) / c;
+            if (ab + k * c == n && k > 0) {
+                ans = max(ans, i + j + k);
+                // printf("%d %d %d\n", i, j, k);
             }
         }
     }
-    cout << dp[n] << endl;
+    cout << ans << endl;
 
     return 0;
 }

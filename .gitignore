@@ -1,0 +1,7 @@
+*.pro
+
+*.user
+input.txt
+*~
+*.class
+output.txt

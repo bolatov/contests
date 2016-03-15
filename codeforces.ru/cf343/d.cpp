@@ -11,6 +11,8 @@ int main() {
     freopen("input.txt", "r", stdin);
 #endif
 
+
+
     int n;
     cin >> n;
     double r, h;
@@ -42,6 +44,7 @@ int main() {
     //     ret += v[i];
     // }
     printf("%.10f\n", ret);
+
 
     return 0;
 }
