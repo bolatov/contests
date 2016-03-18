@@ -1,33 +1,13 @@
 package main
 
-import (
-	"math/rand"
-	"testing"
-)
+import "testing"
 
 func TestHeapSort(t *testing.T) {
 	arr := randomInts(100000, 10000000)
-	arr = sort(arr)
+	arr = heapSort(arr)
 	if !isSorted(arr) {
 		t.Error("Array is not sorted")
 	}
-}
-
-func isSorted(s []int) bool {
-	for i := 1; i < len(s); i++ {
-		if s[i-1] > s[i] {
-			return false
-		}
-	}
-	return true
-}
-
-func randomInts(n, max int) []int {
-	s := make([]int, n)
-	for i := 0; i < n; i++ {
-		s[i] = rand.Intn(max)
-	}
-	return s
 }
 
 func TestHeapify(t *testing.T) {

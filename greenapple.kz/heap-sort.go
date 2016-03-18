@@ -75,7 +75,7 @@ func buildHeap(s []int) []int {
 	return s
 }
 
-func sort(s []int) []int {
+func heapSort(s []int) []int {
 	s = initHeap(s)
 	s = heapify(s)
 	s = buildHeap(s)
