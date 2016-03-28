@@ -2,50 +2,49 @@ package main
 
 import (
 	"bufio"
-	"math"
+	"container/list"
 	"os"
-	"sort"
 	"strconv"
 )
-f
-unc main() {
-	var t, n int
-	t = readInt()
-	for it := 0; it < t; it++ {
-		n = readInt()
-		v := make([]int, n)
-		for i := 0; i < n; i++ {
-			v[i] = readInt()
-		}
 
-		sort.Ints(v)
-		if n == 0 {
-			printInts(0)
+func main() {
+	defer wr.Flush()
+	sc.Split(bufio.ScanWords)
+
+	var n, b int = readInt(), readInt()
+	b++
+	var t, d int64
+	res := make([]int64, n)
+	q := list.New()
+	for i := 0; i < n; i++ {
+		t, d = readInt64(), readInt64()
+
+		if i == 0 {
+			res[i] = t + d
+			q.PushBack(res[i])
 			continue
-		} else if n == 1 {
-			printInts(1)
-			continue
 		}
 
-		var (
-			tsSize = []int{1}
-			tsLast = []int{v[0]}
-		)
-		for i := 1; i < len(v); i++ {
-			lst := len(tsLast) - 1
-			if tsLast[lst] != v[i] {
-				tsLast = append(tsLast, v[i])
-				tsSize = append(tsSize, 1)
-			} else {
-
-			}
+		// clear queue from finished tasks
+		var next *list.Element
+		for e := q.Front(); q.Len() > 0 && e != nil && e.Value.(int64) <= t; e = next {
+			next = e.Next()
+			q.Remove(e)
 		}
-		r := tsSize[0]
-		for _, sz := range tsSize {
-			r = min(r, sz)
+		if q.Len() >= b {
+			res[i] = -1
+		} else if q.Len() == 0 {
+			res[i] = t + d
+			q.PushBack(res[i])
+		} else {
+			res[i] = q.Back().Value.(int64) + d
+			q.PushBack(res[i])
 		}
-		printInts(r)
 	}
+	for _, v := range res {
+		printInt64s(v)
+	}
+	println()
 }
 
 var (
@@ -86,13 +85,3 @@ func readStr() string {
 func println() {
 	wr.WriteByte('\n')
 }
-
-func min(i, j int) int {
-	if i > j {
-		return j
-	} else {
-		return i
-	}
-}
-
-const max = math.MaxInt64
