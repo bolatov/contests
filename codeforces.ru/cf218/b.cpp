@@ -21,15 +21,21 @@ int count(int n, int gcd) {
         a = (r >= 0) ? r + 1 : -1;
     }
     if (n % 3 == 0) {
-        int r = count(2 * n / 3, gcd);
+        int r = count(n / 3, gcd);
         b = (r >= 0) ? r + 1 : -1;
     }
     if (n % 5 == 0) {
-        int r = count(4 * n / 5, gcd);
+        int r = count(n / 5, gcd);
         c = (r >= 0) ? r + 1 : -1;
     }
-    a = (a < 0) ? MAX_INT : a;
-    return min();
+
+    if (a < 0 && b < 0 && c < 0)
+        return -1;
+    // printf("count(n=%d, gcd=%d): a=%d, b=%d, c=%d\n", n, gcd, a, b, c);
+    a = (a < 0) ? INT_MAX : a;
+    b = (b < 0) ? INT_MAX : b;
+    c = (c < 0) ? INT_MAX : c;
+    return min(a, min(b, c));
 }
 
 int main() {
@@ -49,6 +55,7 @@ int main() {
     if (acnt < 0 || bcnt < 0) {
         puts("-1");
     } else {
+        // printf("acnt=%d, bcnt=%d, gcd=%d\n", acnt, bcnt, gcd);
         cout << (acnt + bcnt) << endl;
     }
 
