@@ -1,5 +1,6 @@
 class Solution {
 private:
+    // vector of ints to string for debugging purposes
     string to_vstr(vector<int> v) {
         string s = "";
         for (int i = 0; i < v.size(); i++) {
@@ -11,9 +12,12 @@ private:
     void f(vector<vector<int>>& vr, vector<int>& vc, vector<int>& vi, int pos, int dots, int offset) {
         for (int i = 0; i < offset; i++) printf("\t");
         printf("f(): pos=%d, vc=%s, dots=%d\n", pos, to_vstr(vc).c_str(), dots);
+        
+        // if no dots are left, then gather the rest of the digits
+        // into IP-address element
         if (dots == 0) {
             int n = 0;
-            bool ok = 0;
+            bool ok = 0; // whether anything happened
             for (; pos < vi.size(); pos++) {
                 ok = 1;
                 n *= 10;
@@ -26,9 +30,10 @@ private:
             return;
         }
         
+        // IP-address element can contain at most 3 digits
         for (int i = 1; i <= 3; i++) {
             int n = 0;
-            bool ok = 0;
+            bool ok = 0; // whether anything happened
             for (int j = pos; j < pos + i && j < vi.size(); j++) {
                 ok = 1;
                 n *= 10;
@@ -42,12 +47,17 @@ private:
         }
     }
     
+    // checks whether IP-address element is in valid range
     bool is(int i) {
         return 0 <= i && i <= 255;
     }
 public:
     vector<string> restoreIpAddresses(string s) {
+        // prepare a vector for final results
         vector<vector<int>> vr;
+        
+        // vector vi for storing each digit
+        // vector vc to store current (temporary) IP-address
         vector<int> vi, vc;
         for (char ch : s) {
             vi.push_back(ch - '0');
@@ -61,6 +71,8 @@ public:
                     t += to_string(v[i]);
                     if (i != v.size() - 1) t += ".";
                 }
+                
+                // assert parsed IP length (without dots) is equal to IP-address s
                 if (s.size() == t.size()-3) vs.push_back(t);
             }
         }
