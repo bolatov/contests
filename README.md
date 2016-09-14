@@ -7,3 +7,4 @@ My solutions to programming contest problems
 * http://www.codeforces.ru
 * http://www.codechef.com
 * http://www.leetcode.com
+* http://www.informatics.mccme.ru
