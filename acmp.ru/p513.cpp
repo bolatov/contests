@@ -13,7 +13,7 @@ int main() {
     int64 n;
     cin >> n;
 
-    cout << n*(n + 1) / 2 - n << endl;
+    cout << (2LL << (n - 1LL)) - (n + 1LL) << endl;
 
     return 0;
 }
