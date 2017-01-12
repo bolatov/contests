@@ -13,7 +13,7 @@ int main() {
     int n;
     cin >> n;
 
-    cout << (2 * n * n - n) << endl;
+    cout << (n - 2) * (n - 1) << endl;
 
     return 0;
 }
