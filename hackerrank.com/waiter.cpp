@@ -6,53 +6,44 @@
 #include <stack>
 using namespace std;
 
-const int MAX = 1e9 + 7;
+const int MAX = 1e6 + 7;
 
 int main() {
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-#endif
     int N, Q, V;
     cin >> N >> Q;
-    vector<stack<int>> vi(Q + 2, stack<int>());
+    vector<stack<int>> vi(2 * Q + 1, stack<int>());
     while (N--) {
         cin >> V;
         vi[0].push(V);
     }
     vector<bool> u(MAX, 1);
-    vector<int> primes;
-    for (int i = 2; (int)primes.size() < Q; i++) {
+    vector<int> v;
+    for (int i = 2; v.size() <= Q; i++) {
         if (u[i]) {
-            primes.push_back(i);
+            v.push_back(i);
             for (int j = i + i; j < MAX; j += i)
                 u[j] = 0;
         }
     }
 
-    for (int i = 0; i < (int)primes.size(); i++)
-        printf("%d: %d\n", i + 1, primes[i]);
+    for (int k = 0; k < Q; k++) {
+        int i = k * 2;
+        while (!vi[i].empty()) {
+            int top = vi[i].top();
+            vi[i].pop();
 
-    while (!vi[0].empty()) {
-        V = vi[0].top();
-        vi[0].pop();
-
-        bool ok = 0;
-        for (int i = 0; i < Q && V >= primes[i]; i++) {
-            if (V % primes[i] == 0) {
-                vi[i + 1].push(V);
-                ok = 1;
-            }
+            if (top % v[k] == 0)
+                vi[i + 1].push(top);
+            else
+                vi[i + 2].push(top);
         }
-        if (!ok) vi[vi.size() - 1].push(V);
     }
 
-    for (int i = 1; i < (int)vi.size(); i++) {
-        // printf("B_%d:\n", primes[i - 1]);
+    for (int i = 1; i < vi.size(); i++) {
         while (!vi[i].empty()) {
-            // cout << vi[i].top() << endl;
+            cout << vi[i].top() << endl;
             vi[i].pop();
         }
-        // printf("\n\n");
     }
 
     return 0;
